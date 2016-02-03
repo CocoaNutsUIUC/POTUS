@@ -15,7 +15,21 @@ class ViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+		
+		// Prepare to create a local notification.
+		let notification = UILocalNotification()
+		notification.alertAction = "Update"
+		notification.alertTitle = "Update Launch Codes"
+		notification.alertBody = "Update launch codes now."
+		notification.soundName = UILocalNotificationDefaultSoundName
+		notification.fireDate = NSDate(timeIntervalSinceNow: 60 * 60 * 24) // 1 day
+		notification.repeatInterval = .Day
+		
+		// Cancel any existing notifications, and re-schedule a new notification.
+		let app = UIApplication.sharedApplication()
+		app.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil))
+		app.cancelAllLocalNotifications()
+		app.scheduleLocalNotification(notification)
 	}
 	
 	override func didReceiveMemoryWarning() {
